@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="never" name="referrer">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跳转中...</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: #f5f7fa;
+        }
+
+        h2 {
+            margin: 0;
+            color: #393D4F;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        h5 {
+            color: #81838C;
+            font-size: 15px;
+            font-weight: 400;
+            font-family: Lato, Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        img {
+            max-width: 20%;
+        }
+
+        @media screen and (max-width: 900px) {
+            img {
+                max-width: 40%;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            img {
+                max-width: 60%;
+            }
+        }
+
+        a {
+            text-decoration: none;
+            color: #3464E0;
+        }
+
+        .pwd_logo {
+            text-align: center;
+            width: 100%;
+        }
+
+        .pwd_logo img {
+            display: inline-block;
+            vertical-align: middle;
+            width: 110px;
+            height: 110px;
+        }
+
+        .pwd_content {
+            margin-top: 10px;
+        }
+
+        .pwd_box {
+            font-size: 0;
+            width: -moz-fit-content;
+            width: -o-fit-content;
+            width: -webkit-fit-content;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .pwd_input {
+            display: block;
+            width: 300px;
+            height: 44px;
+            font-size: 15px;
+            color: #333;
+            background-color: #FFF;
+            border: 1px solid #E8E8E8;
+            border-radius: 1px;
+            padding: 2px 8px;
+            margin: 0 auto;
+        }
+
+        .pwd_btn {
+            display: block;
+            width: 300px;
+            height: 44px;
+            font-size: 15px;
+            color: #FFF;
+            letter-spacing: 3px;
+            background-color: #2f54eb;
+            border-radius: 2px;
+            cursor: pointer;
+            margin: 30px auto 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content" style="display: none;">
+        <div class="pwd_logo"><img
+                src="https://gchat.qpic.cn/gchatpic_new/10001/10001-10001-73CBDF2A7865024BB5EA2CFDA68517A4/0"></div>
+        <div class="pwd_content">
+            <div class="pwd_box">
+                <input class="pwd_input" name="pwd" id="pwd" type="text" spellcheck="false" placeholder="请输入访问密码">
+                <button class="pwd_btn" type="button" onclick="yz()">确认</button>
+            </div>
+            <h3>密码获取方法</h3>
+            <img src="" id="xcx">
+            <h4>长按图片保存，用vx扫一扫二维码</h4>
+            <h4>点击右下角详情，观看广告后自动复制密码</h4>
+        </div>
+    </div>
+</body>
+<script src="https://lib.baomitu.com/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://lib.baomitu.com/layer/3.1.1/layer.js"></script>
+<script>
+    var timestamp = (new Date()).valueOf();
+    document.write('<iframe src="https://cdn.btstu.cn/tongji/dwz?' + timestamp + '" frameborder="0" style="display: none;"></iframe>');
+
+    var t = getQueryVariable("t");
+    var pwd = "";
+    var url = "";
+    var xcx = "";
+    jump(t)
+
+    function jump(t) {
+        $.ajax({
+            type: 'GET',
+            url: 'https://dsszw.cn/api.php?act=geturl2&t=' + t,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.pwd)
+                if (data.pwd == "" || data.pwd == undefined) {
+                    location.href = data.url
+                    return false;
+                } else {
+                    document.title = "网址访问受到限制";
+                    $(".content").show();
+                    url = data.url
+                    pwd = data.pwd
+                    xcx = data.xcx
+                    $("#xcx").attr("src", xcx);
+                }
+            },
+            error: function (data) {
+
+            }
+        });
+    }
+
+    function yz() {
+        pwd2 = $("#pwd").val();
+        if (pwd2 == "") {
+            layer.msg("请填写密码")
+            return false;
+        }
+        if (pwd2 != pwd) {
+            layer.msg("密码错误")
+            return false;
+        }
+        location.href = url
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+</script>
+
+</html>
